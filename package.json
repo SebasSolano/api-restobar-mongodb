@@ -1,0 +1,26 @@
+{
+  "name": "api-restobar-mongodb",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000a\u0000p\u0000i\u0000-\u0000r\u0000e\u0000s\u0000t\u0000o\u0000b\u0000a\u0000r\u0000-\u0000m\u0000o\u0000n\u0000g\u0000o\u0000d\u0000b\u0000\r\u0000 \u0000",
+  "main": "src/app.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.4",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "nodemon": "^3.1.9"
+  }
+}
