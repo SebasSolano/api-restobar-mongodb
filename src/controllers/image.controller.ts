@@ -2,6 +2,13 @@ import { Request, Response } from "express";
 import { ImageService } from "../services/image.service.ts";
 
 export class ImageController {
+  /**
+   * @description sube una imagen al servidor.
+   * @param req la solicitud HTTP que contiene la imagen y el nombre.
+   * @param res la respuesta HTTP que se enviará al cliente.
+   * @returns la imagen guardada en la base de datos.
+   * @throws error si falta la imagen o el nombre, o si ocurre un error en el servidor.
+   */
   async uploadImage(req: Request, res: Response) {
     try {
       if (!req.body.image || !req.body.name) {
@@ -22,6 +29,11 @@ export class ImageController {
     }
   }
 
+  /**
+   * @description obtiene imagenes entre dos fechas.
+   * @param req la solicitud HTTP que contiene las fechas de inicio y fin.
+   * @returns una lista de imagenes entre las fechas especificadas.
+   */
   async getImages(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
@@ -35,6 +47,10 @@ export class ImageController {
     }
   }
 
+  /**
+   * @description obtiene estadisticas de imagenes subidas por hora.
+   * @returns estadisticas de imagenes subidas por hora.
+   */
   async getImagesStats(req: Request, res: Response) {
     try {
       const stats = await ImageService.countImagesByHour();
