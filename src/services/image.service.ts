@@ -1,5 +1,4 @@
 import sharp from "sharp";
-import { writeFile } from "fs/promises";
 import { ImageModel } from "../models/image.model.ts";
 
 export class ImageService {

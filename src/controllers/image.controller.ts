@@ -1,4 +1,6 @@
-import { Request, Response } from "express";
+import express from "express";
+type Request = express.Request;
+type Response = express.Response;
 import { ImageService } from "../services/image.service.ts";
 
 export class ImageController {
@@ -51,7 +53,7 @@ export class ImageController {
    * @description obtiene estadisticas de imagenes subidas por hora.
    * @returns estadisticas de imagenes subidas por hora.
    */
-  async getImagesStats(req: Request, res: Response) {
+  async getImageStats(req: Request, res: Response) {
     try {
       const stats = await ImageService.countImagesByHour();
       res.status(200).json(stats);
