@@ -3,13 +3,25 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.config.ts";
 import imageRoutes from "./routes/image.routes.ts";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
-app.use(bodyParser.json({ limit: "15mb" }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET, POST, PUT, DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
+app.use('/uploads', express.static('uploads'));
 
 app.use("/api", imageRoutes);
 

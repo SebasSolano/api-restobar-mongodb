@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import fs from "fs";
 import { ImageModel } from "../models/image.model.ts";
 
 export class ImageService {
@@ -12,10 +13,15 @@ export class ImageService {
     imageBuffer: Buffer,
     originalName: string
   ): Promise<string> {
-    const outputPath = `uploads/${Date.now()}-${originalName.replace(
+    const uploadDir = "uploads";
+    const outputPath = `${uploadDir}/${Date.now()}-${originalName.replace(
       /\.[^/.]+$/,
       ""
     )}.png`;
+
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
 
     await sharp(imageBuffer).png().toFile(outputPath);
 
@@ -29,7 +35,8 @@ export class ImageService {
    * @returns rl objeto de imagen guardado.
    */
   static async saveImageToDB(name: string, url: string) {
-    const image = new ImageModel({ name, url });
+    const currentDate = new Date();
+    const image = new ImageModel({ name, url, uploadDate: currentDate });
     await image.save();
     return image;
   }
