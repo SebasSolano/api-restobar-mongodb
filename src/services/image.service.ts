@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import fs from "fs";
 import { ImageModel } from "../models/image.model.ts";
+import path from "path";
 
 export class ImageService {
   /**
@@ -66,5 +67,27 @@ export class ImageService {
         },
       },
     ]);
+  }
+
+  /**
+   * @description elimina todas las imagenes de la base de datos.
+   * @returns el numero de imagenes eliminadas.
+   */
+  static async deleteAllImagesFromDB() {
+    const result = await ImageModel.deleteMany({});
+    return result.deletedCount;
+  }
+
+  /**
+   * @description elimina todas las imagenes de la carpeta uploads.
+   */
+  static deleteAllImagesFromUploads() {
+    const uploadDir = "uploads";
+    if (fs.existsSync(uploadDir)) {
+      fs.readdirSync(uploadDir).forEach((file) => {
+        const filePath = path.join(uploadDir, file);
+        fs.unlinkSync(filePath);
+      });
+    }
   }
 }

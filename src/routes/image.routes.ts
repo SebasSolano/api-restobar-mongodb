@@ -16,4 +16,8 @@ router.get("/stats", async (req, res) => {
   await imageController.getImageStats(req, res);
 });
 
+router.delete("/images", async (req, res) => {
+  await imageController.deleteAllImages(req, res);
+});
+
 export default router;
