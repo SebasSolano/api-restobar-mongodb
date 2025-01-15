@@ -61,4 +61,22 @@ export class ImageController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  /**
+   * @description elimina todas las imagenes de la base de datos y la carpeta uploads.
+   */
+  async deleteAllImages(req: Request, res: Response) {
+    try {
+      const deletedCount = await ImageService.deleteAllImagesFromDB();
+
+      ImageService.deleteAllImagesFromUploads();
+
+      res.status(200).json({
+        message: "All images have been deleted",
+        deletedCount,
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }

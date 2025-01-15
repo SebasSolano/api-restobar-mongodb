@@ -1,5 +1,7 @@
 import sharp from "sharp";
+import fs from "fs";
 import { ImageModel } from "../models/image.model.ts";
+import path from "path";
 
 export class ImageService {
   /**
@@ -12,10 +14,15 @@ export class ImageService {
     imageBuffer: Buffer,
     originalName: string
   ): Promise<string> {
-    const outputPath = `uploads/${Date.now()}-${originalName.replace(
+    const uploadDir = "uploads";
+    const outputPath = `${uploadDir}/${Date.now()}-${originalName.replace(
       /\.[^/.]+$/,
       ""
     )}.png`;
+
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
 
     await sharp(imageBuffer).png().toFile(outputPath);
 
@@ -29,7 +36,8 @@ export class ImageService {
    * @returns rl objeto de imagen guardado.
    */
   static async saveImageToDB(name: string, url: string) {
-    const image = new ImageModel({ name, url });
+    const currentDate = new Date();
+    const image = new ImageModel({ name, url, uploadDate: currentDate });
     await image.save();
     return image;
   }
@@ -59,5 +67,27 @@ export class ImageService {
         },
       },
     ]);
+  }
+
+  /**
+   * @description elimina todas las imagenes de la base de datos.
+   * @returns el numero de imagenes eliminadas.
+   */
+  static async deleteAllImagesFromDB() {
+    const result = await ImageModel.deleteMany({});
+    return result.deletedCount;
+  }
+
+  /**
+   * @description elimina todas las imagenes de la carpeta uploads.
+   */
+  static deleteAllImagesFromUploads() {
+    const uploadDir = "uploads";
+    if (fs.existsSync(uploadDir)) {
+      fs.readdirSync(uploadDir).forEach((file) => {
+        const filePath = path.join(uploadDir, file);
+        fs.unlinkSync(filePath);
+      });
+    }
   }
 }
